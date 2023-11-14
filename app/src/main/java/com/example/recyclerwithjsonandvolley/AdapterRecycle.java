@@ -43,10 +43,10 @@ public class AdapterRecycle extends RecyclerView.Adapter<AdapterRecycle.MyViewHo
 ModelItem currentItem = arrayList.get(position);
 String imageUrl = currentItem.getImageUrl();
 String creator = currentItem.getCreator();
-String likes = currentItem.getLikes();
+int likes = currentItem.getLikes();
 
 holder.tvCreator.setText(creator);
-holder.tvLikes.setText(likes);
+holder.tvLikes.setText("Likes: " +likes);
 
 Context context1 = holder.ivImage.getContext();
 
@@ -77,6 +77,30 @@ Context context1 = holder.ivImage.getContext();
             tvCreator = itemView.findViewById(R.id.tv_creator);
             tvLikes = itemView.findViewById(R.id.tv_likes);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (myOnItemClickListener != null){
+                        int pos = getBindingAdapterPosition();
+                        if (pos != RecyclerView.NO_POSITION){
+                            myOnItemClickListener.onItemClick(pos);
+                        }
+                    }
+                }
+            });
+
         }
     }
+
+    public interface MyOnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    private MyOnItemClickListener myOnItemClickListener;
+
+    public void setMyOnItemClickListener(MyOnItemClickListener pMyOnItemClickListener){
+        this.myOnItemClickListener = pMyOnItemClickListener;
+    }
+
+
 }
